@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 mod styles;
 mod buttons;
 
@@ -773,13 +775,23 @@ impl Application for State{
     }
 }
 
+
+static ICON: &[u8] = include_bytes!("../res/icon/propinva.png");
+const ICON_HEIGHT: u32 = 512;
+const ICON_WIDTH: u32 = 512;
+
 fn main() -> iced::Result {
+
+    let image = image::load_from_memory(ICON).unwrap();
+    let icon = window::icon::from_rgba(image.as_bytes().to_vec(), ICON_HEIGHT, ICON_WIDTH).unwrap();
+
     let settings = Settings{
         id: None,
         window: window::settings::Settings{
             size: Size { width: 600.0, height: 400.0 },
             position: window::Position::Centered,
             resizable: false,
+            icon: Some(icon),
             ..Default::default()
         },
         antialiasing: true,
